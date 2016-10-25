@@ -1,0 +1,9 @@
+<div class="mb5">Paging @{model.page}/@{model.count}:</div>
+<div class="paging">
+    @{foreach m in model.render()}
+       @{if  m.page < 25 }
+       <a href="@{m.url}"@{if m.selected} class="selected"@{endif}>@{m.page}</a>
+       @{fi}
+    @{end}
+    <div>@{model.items.format(0)} @{model.items.pluralize('pages', 'page', 'pages', 'pages')}</div>
+</div>

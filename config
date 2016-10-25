@@ -1,0 +1,6 @@
+
+
+allow-compile-html : false 
+allow-compile-script : false 
+allow-compile-style : false  
+static-accepts-custom : .cur, .wav

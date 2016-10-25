@@ -1,0 +1,17 @@
+{
+  "name": "totaljs_app1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "node --nolazy --debug-brk=5858 index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.11.1",
+    "redis": "^2.6.2",
+    "total.js": "^2.1.0"
+  }
+}

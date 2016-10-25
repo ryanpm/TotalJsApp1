@@ -1,0 +1,12 @@
+@{meta('Your page title', 'Your page description', 'Your page keywords')}
+
+<h1>@{title}</h1>
+<br />
+
+@{if model.category === 'web-applications'}
+    <p>We build web application</p>
+@{fi}
+
+@{if model.category === 'mobile-applications'}
+    <p>We build mobile applications</p>
+@{fi}
