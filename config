@@ -4,3 +4,8 @@ allow-compile-html : false
 allow-compile-script : false 
 allow-compile-style : false  
 static-accepts-custom : .cur, .wav
+ 
+secret							: 125673sfq@2
+
+// session cookie name
+cookie							: __user

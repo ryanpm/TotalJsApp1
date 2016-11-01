@@ -1,0 +1,142 @@
+
+<link  rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+
+<form action="" method="POST" role="form">
+    <legend>Form title</legend>
+
+    <div class="form-group">
+        <label for="">Title</label>
+        <input type="text" class="form-control" id="" placeholder="Input field">
+    </div>
+    
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" onclick="addLine()">+ Add Line!</button>
+    </span>
+    <br>
+    
+    <div id="content" class="form-group">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<style>
+.chordslot {
+    float: left;
+    width: 10px;
+    height: 35px;
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    vertical-align:bottom;
+    position:relative;
+    z-index:-1;
+}
+.chord{
+    margin-top:5px;
+    display : block;
+    bottom:0px;
+    position: absolute;
+    z-index:10;
+}
+.dragging{
+    color: red;
+}
+</style>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+var current_drag_id;
+function drag(ev) {
+    console.log(ev);
+    console.log(ev.target.id);
+    console.log('drag');
+    current_drag_id = ev.target.id
+    console.log(current_drag_id);
+    
+    //ev.dataTransfer.setData("text", ev.target.id);
+    $('#'+ev.target.id).addClass('dragging');
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = current_drag_id;//ev.dataTransfer.getData("text");
+    console.log( data )
+    if( typeof data != "undefined" ){
+        var elm = document.getElementById(data);
+        if(elm){
+            if(  ev.target ){
+                ev.target.appendChild(elm);
+                $(elm).removeClass('dragging');
+            }
+        }
+    }
+    
+}
+</script>
+</head>
+<body>
+
+<h2>Drag and Drop</h2>
+<p>Drag the image back and forth between the two div elements.</p>
+
+<img class="chord"  src="https://dummyimage.com/60x25/000/fff.gif&text=G%23m"  draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31">
+
+<!--<div class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)">-->
+  <!--<span class="chord"  draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31">F#m</span>-->
+<!--</div>-->
+<br><br>
+<div>
+        
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div  class="chordslot" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+</div>
+
+
+
+<style>
+.chordline{
+    margin: 0px;
+    padding: 0px;
+    height: 22px;
+    border: none;
+    width :100%;
+}
+.lyrics{
+    border-top:none;
+    width :100%;
+}
+</style>
+
+<script>
+
+function addLine(){
+
+    var line = '<div><input type="text" name="content_chord[]"  class="chordline" value=""><input type="text" name="content_lyrics[]"  class="lyrics " value=""><br></div>';
+    $(line).appendTo('#content');
+
+}
+
+</script>

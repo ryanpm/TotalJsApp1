@@ -1,31 +1,42 @@
-NEWSCHEMA('users').make(function(schema) {
+NEWSCHEMA('User').make(function(schema) {
+
+    var table_name = 'users';
 
 	schema.define('email', 'Email', true);
-	schema.define('first_name', 'String(80)');
-	schema.define('last_name', 'String(80)');
+	schema.define('password', 'String(30)', true);
 
-	// Saves the model into the database
-	schema.setSave(function(error, model, options, callback) {
+	schema.addWorkflow('login', function(error, model, controller, callback) {
 
-		model.datecreated = F.datetime;
+		NOSQL(table_name).find().make(function(builder) {
+			builder.first();
+			builder.where('email', model.email);
+			builder.where('password', model.password);
+			builder.callback(function(err, response) {
 
-        // NOSQL('newsletter').insert(model.$clean()); 
-        DATABASE(function(err, connection){
+				if (!response) {
+					error.push('error-user-404');
+					return callback();
+				}
 
-            if(err != null) {
-                self.throw500(err);
-                return;
-            }
+				// Writes logs
+				NOSQL('users-logs').insert({ id: response.id, email: response.email, ip: controller.ip, date: new Date() });
 
-            connection.query('INSERT INTO posts SET ?', {first_name: 'test'}, function(err, result) {
-                if (err) throw err; 
-                console.log(result.insertId); 
-    		    callback(SUCCESS(true));
-            });
-  
-        });
+				// Sets cookies
+				controller.cookie(F.config.cookie, F.encrypt({ id: response.id, ip: controller.ip }, 'user'), '5 minutes');
 
+				// Responds
+				callback(SUCCESS(true));
 
+			}, error);
+		});
 	});
-	
+
+ 
+	schema.setSave(function(error, model, options, callback) {
+		NOSQL(table_name).insert(model);
+		callback(SUCCESS(true));
+	}); 
+
 });
+
+ 

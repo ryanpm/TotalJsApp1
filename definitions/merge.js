@@ -1,1 +1,2 @@
-F.merge('/css/default.css', '/css/bootstrap.min.css','/css/default.css');
+F.merge('/css/default.css','/css/default.css');
+F.merge('/js/default.js', '#shared');

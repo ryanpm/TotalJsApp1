@@ -1,30 +1,93 @@
 // var Agent = require('sqlagent/mysql').connect('connetion-string-to-mysql');
 // var sql = new Agent();
+var fs = require('fs');
 
 exports.install = function() {
  
     // define routes with actions
     F.route('/', view_index);
+    F.route('/login', view_login);
+    F.route('/dashboard', view_dashboard, ['authorize']);
+    // F.route('/dashboard', view_dashboard );
     F.route('/services/{name}/', view_services);
     F.route('/contact/', view_contact); 
     F.route('/contactus/', view_contact);   
     F.route('/contact/', json_contact, ['post']);
 
-	F.route('/nu/', showNUUsers)
-	F.route('/pag/', showPag)
-	F.route('/blocky/', function(){
-
-        this.view('blocky')
-        
-    })
+    F.route('/nu/', showNUUsers)
+    F.route('/pag/', showPag)
+    F.route('/readfile/', read_file)
+    F.route('/readfile2/', read_file2)
  
     F.restful('/api/users/', action_query, action_read, action_save, action_remove);
-     
+       
 	F.websocket('/counter/', socket_reader, ['json']);
 
     F.use('session');
 
 };
+
+function *read_file(){
+
+    var content     = yield sync(fs.readFile)(F.path.databases('users.nosql'));
+    var content2    = yield sync(fs.readFile)(F.path.databases('users-logs.nosql'));
+
+    var ge1 = gen1();
+
+    console.log(ge1.next());
+    console.log(ge1.next());
+    console.log(ge1.next());
+    console.log(ge1.next());
+    console.log(ge1.next());
+    console.log(ge1.next());
+    console.log(ge1);
+
+    this.plain(content.toString('utf8')+''+content2.toString('utf8'))
+
+}
+
+function read_file2(){
+
+    var self = this;
+    var content;
+    var content2;
+
+    var content = fs.readFile(F.path.databases('users.nosql'),function(err, data){
+        content = data
+        self.plain(data.toString('utf8'))
+    });
+
+    var content = fs.readFile(F.path.databases('users-logs.nosql'),function(err, data){
+        content2 = data
+        self.plain(data.toString('utf8'))
+    })
+    // var content2 = fs.readFile(F.path.databases('users-logs.nosql'),'utf8')
+  
+    // self.plain(content+''+content2)
+
+}
+
+function *gen1(){
+
+    var i = 1
+    while( i < 5 )  
+        yield i++;
+    
+    return 'yes';
+}
+
+function view_login(){
+
+    this.view('login')
+
+}
+
+function view_dashboard(){
+
+    this.view('dashboard')
+    
+}
+ 
 
 function socket_reader() {
 	var self = this;
@@ -143,6 +206,10 @@ function view_index() {
 
     self.counter++;
 	self.session.counter++;  
+
+    console.log(isomorphic.shared.getName());
+
+    
     self.view('index',{counter:self.session.counter, counter2 : self.counter});
 
 }
